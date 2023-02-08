@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    password: 123
+    url: jdbc:postgresql://localhost:5432/StoGram
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
