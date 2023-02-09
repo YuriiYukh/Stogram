@@ -35,7 +35,7 @@ public class JWTTokenProvider {
         return Jwts.builder()
                 .setSubject(userId)
                 .addClaims(claimsMap)
-                .signWith(SignatureAlgorithm.ES512, SecurityConstants.SECRET)
+                .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
                 .compact();
     }
     
