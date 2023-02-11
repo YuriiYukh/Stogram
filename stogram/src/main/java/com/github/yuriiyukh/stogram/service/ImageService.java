@@ -18,9 +18,7 @@ import com.github.yuriiyukh.stogram.entity.Image;
 import com.github.yuriiyukh.stogram.entity.Post;
 import com.github.yuriiyukh.stogram.entity.UserEntity;
 import com.github.yuriiyukh.stogram.payload.exeption.ImageNotFoundException;
-import com.github.yuriiyukh.stogram.payload.exeption.PostNotFoundException;
 import com.github.yuriiyukh.stogram.repo.ImageRepository;
-import com.github.yuriiyukh.stogram.repo.PostRepository;
 import com.github.yuriiyukh.stogram.repo.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +29,10 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
-    private final PostRepository postRepository;
     
-    public ImageService(ImageRepository imageRepository, UserRepository userRepository, PostRepository postRepository) {
+    public ImageService(ImageRepository imageRepository, UserRepository userRepository) {
         this.imageRepository = imageRepository;
         this.userRepository = userRepository;
-        this.postRepository = postRepository;
     }
 
     public Image uploadImageForUser(MultipartFile file, Principal principal) throws IOException {

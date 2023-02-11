@@ -60,6 +60,12 @@ public class UserService {
         return getUserByPrincipal(principal);
     }
     
+    public UserEntity getUserById(Long userId) {
+        
+        return userRepository.findById(userId).
+                orElseThrow(() -> new UsernameNotFoundException("User with id " + userId + " not found"));
+    }
+    
     private UserEntity getUserByPrincipal(Principal principal) {
         
         String userName = principal.getName();
