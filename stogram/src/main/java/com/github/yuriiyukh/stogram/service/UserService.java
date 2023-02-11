@@ -1,8 +1,12 @@
 package com.github.yuriiyukh.stogram.service;
 
+import java.security.Principal;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.github.yuriiyukh.stogram.dto.UserDTO;
 import com.github.yuriiyukh.stogram.entity.UserEntity;
 import com.github.yuriiyukh.stogram.entity.enums.UserRoles;
 import com.github.yuriiyukh.stogram.payload.exeption.UserExistException;
@@ -40,5 +44,27 @@ public class UserService {
             log.error("Error during registration " + ex.getMessage());
             throw new UserExistException("The user " + user.getUsername() + "already exists");
         }
+    }
+    
+    public UserEntity updateUser(UserDTO userDTO, Principal principal) {
+        UserEntity user = getUserByPrincipal(principal);
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setBio(userDTO.getBio());
+        
+        return userRepository.save(user);
+    }
+    
+    public UserEntity getCurrentUser(Principal principal) {
+        
+        return getUserByPrincipal(principal);
+    }
+    
+    private UserEntity getUserByPrincipal(Principal principal) {
+        
+        String userName = principal.getName();
+        
+        return userRepository.findUserByUserName(userName).
+                orElseThrow(() -> new UsernameNotFoundException("User " + userName + " not found"));
     }
 }

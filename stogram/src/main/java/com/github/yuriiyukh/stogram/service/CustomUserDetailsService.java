@@ -1,8 +1,6 @@
 package com.github.yuriiyukh.stogram.service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     
     public UserEntity loadUserById(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).
+                orElseThrow(() -> new UsernameNotFoundException("No user witn id " + id));
     }
     
     public static UserEntity build(UserEntity user) {
