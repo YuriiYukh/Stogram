@@ -43,21 +43,21 @@ public class ImageController {
             @RequestParam("file") MultipartFile file, Principal principal) throws IOException {
 
         imageService.uploadImageForPost(file, principal, Long.parseLong(postId));
-        
+
         return new ResponseEntity<>(new MessageResponse("Image uploaded successfully"), HttpStatus.OK);
     }
-    
+
     @GetMapping("/profileImage")
     public ResponseEntity<Image> getProfileImage(Principal principal) {
-        
+
         Image userImage = imageService.getImageToUser(principal);
 
         return new ResponseEntity<>(userImage, HttpStatus.OK);
     }
-    
+
     @GetMapping("/{postId}/image")
     public ResponseEntity<Image> getPostImage(@PathVariable("postId") String postId, Principal principal) {
-        
+
         Image postImage = imageService.getImageToPost(Long.parseLong(postId));
 
         return new ResponseEntity<>(postImage, HttpStatus.OK);

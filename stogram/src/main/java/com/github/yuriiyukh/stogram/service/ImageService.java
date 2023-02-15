@@ -29,20 +29,20 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
-    
+
     public ImageService(ImageRepository imageRepository, UserRepository userRepository) {
         this.imageRepository = imageRepository;
         this.userRepository = userRepository;
     }
 
     public Image uploadImageForUser(MultipartFile file, Principal principal) throws IOException {
-        
+
         UserEntity user = getUserByPrincipal(principal);
-        
+
         log.info("Uploading image for user " + user.getUsername());
-        
+
         Image userProfileImage = imageRepository.findByUserId(user.getId()).orElse(null);
-        
+
         if (!ObjectUtils.isEmpty(userProfileImage)) {
             imageRepository.delete(userProfileImage);
         }
@@ -50,41 +50,38 @@ public class ImageService {
         image.setUserId(user.getId());
         image.setImageBytes(compressBytes(file.getBytes()));
         image.setName(file.getOriginalFilename());
-        
+
         return imageRepository.save(image);
     }
-    
+
     public Image uploadImageForPost(MultipartFile file, Principal principal, Long postId) throws IOException {
-        
+
         UserEntity user = getUserByPrincipal(principal);
-        Post post = user.getPosts()
-                .stream()
-                .filter(p -> p.getId().equals(postId))
-                .collect(toSinglePostCollector());
-        
+        Post post = user.getPosts().stream().filter(p -> p.getId().equals(postId)).collect(toSinglePostCollector());
+
         Image image = new Image();
         image.setPostId(postId);
         image.setImageBytes(compressBytes(file.getBytes()));
         image.setName(file.getOriginalFilename());
 
         log.info("Uploading image for post " + post.getTitle());
-        
+
         return imageRepository.save(image);
     }
-    
+
     public Image getImageToUser(Principal principal) {
-        
+
         UserEntity user = getUserByPrincipal(principal);
-        
+
         Image image = imageRepository.findByUserId(user.getId()).orElse(null);
-        
+
         if (!ObjectUtils.isEmpty(image)) {
             image.setImageBytes(decompressBytes(image.getImageBytes()));
         }
-        
+
         return image;
     }
-    
+
     public Image getImageToPost(Long postId) {
 
         Image image = imageRepository.findByPostId(postId)
@@ -112,7 +109,7 @@ public class ImageService {
         } catch (IOException e) {
             log.error("Cannot compress Bytes");
         }
-        System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
+        log.info("Compressed Image Byte Size - " + outputStream.toByteArray().length);
         return outputStream.toByteArray();
     }
 

@@ -12,5 +12,5 @@ public class LoginRequest {
 
     @NotEmpty(message = "Password cannot be empty")
     private String password;
-    
+
 }

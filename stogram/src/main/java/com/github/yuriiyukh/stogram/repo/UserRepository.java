@@ -9,7 +9,7 @@ import com.github.yuriiyukh.stogram.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findUserByUserName(String userName);
-    
+
     Optional<UserEntity> findUserByEmail(String email);
-    
+
 }

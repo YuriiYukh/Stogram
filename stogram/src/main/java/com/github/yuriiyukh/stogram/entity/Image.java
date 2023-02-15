@@ -6,6 +6,8 @@ import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -17,11 +19,11 @@ public class Image {
     @Column(nullable = false)
     private String name;
     @Lob
-    @Column(columnDefinition = "bytea")
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] imageBytes;
     @JsonIgnore
     private Long userId;
     @JsonIgnore
     private Long postId;
-    
+
 }

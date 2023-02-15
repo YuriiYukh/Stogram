@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.stereotype.Component;
 
-@Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Component
 public @interface Facade {

@@ -35,7 +35,7 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JWTTokenProvider jwtTokenProvider;
-    
+
     public AuthController(ResponseErrorValidation responseErrorValidation, UserService userService,
             AuthenticationManager authenticationManager, JWTTokenProvider jwtTokenProvider) {
         this.responseErrorValidation = responseErrorValidation;
@@ -43,36 +43,38 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
     }
-    
+
     @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignUpRequest signUpRequest, BindingResult bindingResult) {
-        
-        ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
-        
-        if (!ObjectUtils.isEmpty(errors)) {
-            return errors;
-        }
-        
-        userService.createUser(signUpRequest);
-        
-        return ResponseEntity.ok(new MessageResponse("Registration succsessful"));
-    }
-    
-    @PostMapping("/signin")
-    public ResponseEntity<Object> authentificateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignUpRequest signUpRequest,
+            BindingResult bindingResult) {
 
         ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
-        
+
         if (!ObjectUtils.isEmpty(errors)) {
             return errors;
         }
-        
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUserName(), loginRequest.getPassword()));
-        
+
+        userService.createUser(signUpRequest);
+
+        return ResponseEntity.ok(new MessageResponse("Registration succsessful"));
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<Object> authentificateUser(@Valid @RequestBody LoginRequest loginRequest,
+            BindingResult bindingResult) {
+
+        ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
+
+        if (!ObjectUtils.isEmpty(errors)) {
+            return errors;
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = SecurityConstants.TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
-        
+
         return ResponseEntity.ok(new JWTTokenSuccsessResponse(true, jwt));
     }
 }

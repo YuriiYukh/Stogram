@@ -22,22 +22,22 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false)
     private String firstName;
-    
+
     @Column(unique = true, updatable = false)
     private String userName;
-    
+
     @Column(nullable = false)
     private String lastName;
-    
+
     @Column(unique = true)
     private String email;
-    
+
     @Column(columnDefinition = "text")
     private String bio;
-    
+
     @Column(length = 3000)
     private String password;
 
@@ -68,8 +68,8 @@ public class UserEntity implements UserDetails {
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();
     }
-    
-    //Security methods
+
+    // Security methods
 
     @Override
     public String getPassword() {

@@ -11,15 +11,15 @@ import javax.validation.Payload;
 
 import com.github.yuriiyukh.stogram.validation.PasswordMatchesValidator;
 
-@Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordMatchesValidator.class)
 @Documented
 public @interface PasswordMatches {
-    
+
     String message() default "Password does not match";
-    
-    Class<?>[] groups() default{};
-    
-    Class<? extends Payload>[] payload() default{};
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

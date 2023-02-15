@@ -11,16 +11,16 @@ import javax.validation.Payload;
 
 import com.github.yuriiyukh.stogram.validation.EmailValidator;
 
-@Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EmailValidator.class)
 @Documented
 public @interface ValidEmail {
-    
+
     String message() default "Invalid email";
-    
-    Class<?>[] groups() default{};
-    
-    Class<? extends Payload>[] payload() default{};
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 
 }

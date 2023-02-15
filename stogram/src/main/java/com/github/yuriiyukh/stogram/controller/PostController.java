@@ -31,7 +31,7 @@ public class PostController {
     private final PostFacade postFacade;
     private final PostService postService;
     private final ResponseErrorValidation responseErrorValidation;
-    
+
     public PostController(PostFacade postFacade, PostService postService,
             ResponseErrorValidation responseErrorValidation) {
         this.postFacade = postFacade;
@@ -42,16 +42,16 @@ public class PostController {
     @PostMapping("/create")
     public ResponseEntity<Object> createPost(@Valid @RequestBody PostDTO postDTO, BindingResult bindingResult,
             Principal principal) {
-        
+
         ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
 
         if (!ObjectUtils.isEmpty(errors)) {
             return errors;
         }
-        
+
         Post post = postService.createPost(postDTO, principal);
         PostDTO createdPost = postFacade.postToPostDTO(post);
-        
+
         return new ResponseEntity<>(createdPost, HttpStatus.OK);
     }
     
@@ -76,11 +76,11 @@ public class PostController {
 
         return new ResponseEntity<>(postsDTO, HttpStatus.OK);
     }
-    
+
     @PostMapping("/{postId}/{userName}/like")
     public ResponseEntity<PostDTO> likePost(@PathVariable("postId") String postId,
             @PathVariable("userName") String userName) {
-        
+
         Post post = postService.likePost(Long.parseLong(postId), userName);
         PostDTO postDTO = postFacade.postToPostDTO(post);
 
@@ -95,5 +95,5 @@ public class PostController {
 
         return new ResponseEntity<>(new MessageResponse("Post have been deleted"), HttpStatus.OK);
     }
-    
+
 }

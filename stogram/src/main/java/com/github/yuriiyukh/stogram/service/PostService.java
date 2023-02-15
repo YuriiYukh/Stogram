@@ -58,23 +58,21 @@ public class PostService {
         return postRepository.findPostByIdAndUserId(postId, user.getId()).orElseThrow(() -> new PostNotFoundException(
                 "Post with id " + postId + " and user id " + user.getId() + " does not exist."));
     }
-    
+
     public List<Post> getUserPosts(Principal principal) {
-        
+
         UserEntity user = getUserByPrincipal(principal);
-        
+
         return postRepository.findAllByUserOrderByCreatedDateDesc(user);
     }
-    
+
     public Post likePost(Long postId, String userName) {
-        
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("No post found witn id " + postId));
-        
-        Optional<String> userLiked = post.getLikedUsers()
-                .stream()
-                .filter(user -> user.equals(userName))
-                .findAny();
-        
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("No post found witn id " + postId));
+
+        Optional<String> userLiked = post.getLikedUsers().stream().filter(user -> user.equals(userName)).findAny();
+
         if (userLiked.isPresent()) {
             post.setLikes(post.getLikes() - 1);
             post.getLikedUsers().remove(userName);
@@ -85,9 +83,9 @@ public class PostService {
 
         return postRepository.save(post);
     }
-    
+
     public void deletePost(Long postId, Principal principal) {
-        
+
         Post post = getByPostId(postId, principal);
         Optional<Image> image = imageRepository.findByPostId(postId);
         postRepository.delete(post);

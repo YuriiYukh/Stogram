@@ -25,45 +25,47 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    
+
     public CommentService(CommentRepository commentRepository, PostRepository postRepository,
             UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
-    
+
     public Comment saveComment(Long postId, CommentDTO commentDTO, Principal principal) {
-        
+
         UserEntity user = getUserByPrincipal(principal);
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("No post with id " + postId));
-        
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("No post with id " + postId));
+
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setUserId(user.getId());
         comment.setMessage(commentDTO.getMessage());
         comment.setUsername(user.getUsername());
-        
+
         log.info("Add comment from user {} for post with id {}", user.getUsername(), post.getId());
-        
+
         return commentRepository.save(comment);
     }
-    
+
     public List<Comment> findAllCommentsForPost(Long postId) {
-        
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("No post with id " + postId + " found"));
-        
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("No post with id " + postId + " found"));
+
         return commentRepository.findAllByPost(post);
     }
-    
+
     public void deleteComment(Long commentId) {
         Optional<Comment> comment = commentRepository.findById(commentId);
-        
+
         if (comment.isPresent()) {
             commentRepository.delete(comment.get());
         }
     }
-    
+
     private UserEntity getUserByPrincipal(Principal principal) {
 
         String userName = principal.getName();

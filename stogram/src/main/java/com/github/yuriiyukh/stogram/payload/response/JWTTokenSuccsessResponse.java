@@ -9,5 +9,5 @@ public class JWTTokenSuccsessResponse {
 
     private boolean succsess;
     private String token;
-    
+
 }

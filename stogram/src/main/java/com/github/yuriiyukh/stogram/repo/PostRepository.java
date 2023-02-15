@@ -11,9 +11,9 @@ import com.github.yuriiyukh.stogram.entity.UserEntity;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllByUserOrderByCreatedDateDesc(UserEntity user);
-    
+
     List<Post> findAllByOrderByCreatedDateDesc();
-    
+
     Optional<Post> findPostByIdAndUserId(Long id, Long userId);
-    
+
 }

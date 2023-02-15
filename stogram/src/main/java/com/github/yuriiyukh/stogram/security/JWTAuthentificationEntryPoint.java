@@ -27,5 +27,4 @@ public class JWTAuthentificationEntryPoint implements AuthenticationEntryPoint {
         response.getWriter().println(jsonLoginResponse);
     }
 
-    
 }

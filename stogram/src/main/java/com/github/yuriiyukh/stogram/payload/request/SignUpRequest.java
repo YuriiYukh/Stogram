@@ -18,16 +18,16 @@ public class SignUpRequest {
     @NotBlank(message = "Email should not be empty")
     @ValidEmail
     private String email;
-    
+
     @NotEmpty(message = "First name should not be empty")
     private String firstName;
-    
+
     @NotEmpty(message = "Last name should not be empty")
     private String lastName;
-    
+
     @NotEmpty(message = "User name should not be empty")
     private String userName;
-    
+
     @NotEmpty(message = "Password should not be empty")
     @Size(min = 3)
     private String password;

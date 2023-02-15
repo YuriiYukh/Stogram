@@ -46,17 +46,17 @@ public class CommentContoller {
             @PathVariable("postId") String postId, BindingResult bindingResult, Principal principal) {
 
         ResponseEntity<Object> errors = responseErrorValidation.mapValidationService(bindingResult);
-        
+
         if (!ObjectUtils.isEmpty(errors)) {
             return errors;
         }
-        
+
         Comment comment = commentService.saveComment(Long.parseLong(postId), commentDTO, principal);
         CommentDTO createdDTO = commentFacade.commentToCommentDTO(comment);
-        
+
         return new ResponseEntity<>(createdDTO, HttpStatus.OK);
     }
-    
+
     @GetMapping("/{postId}/all")
     public ResponseEntity<List<CommentDTO>> getPostComments(@PathVariable("postId") String postId) {
         List<CommentDTO> commentsDTO = commentService.findAllCommentsForPost(Long.parseLong(postId))
@@ -66,12 +66,12 @@ public class CommentContoller {
         
         return new ResponseEntity<>(commentsDTO, HttpStatus.OK);
     }
-    
+
     @PostMapping("/{commentId}/delete")
     public ResponseEntity<MessageResponse> deleteComment(@PathVariable("commentId") String commentId) {
-        
+
         commentService.deleteComment(Long.parseLong(commentId));
-        
+
         return new ResponseEntity<>(new MessageResponse("Comment have been deleted"), HttpStatus.OK);
     }
 

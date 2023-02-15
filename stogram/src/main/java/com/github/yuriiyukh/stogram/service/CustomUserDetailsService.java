@@ -17,24 +17,23 @@ import com.github.yuriiyukh.stogram.repo.UserRepository;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    
+
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        
+
         UserEntity user = userRepository.findUserByUserName(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + userName + " not found"));
         return build(user);
     }
-    
+
     public UserEntity loadUserById(Long id) {
-        return userRepository.findById(id).
-                orElseThrow(() -> new UsernameNotFoundException("No user witn id " + id));
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("No user witn id " + id));
     }
-    
+
     public static UserEntity build(UserEntity user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
